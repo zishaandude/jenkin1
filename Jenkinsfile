@@ -1,23 +1,23 @@
 pipeline {
     agent any
-
     stages {
-
-        stage('Build Docker Image') {
+        stage('Clone') {
             steps {
-                sh 'docker build -t mysite:v1 .'
+                git url: 'https://github.com/zishaandude/jenkin1.git',
+                    branch: 'main'
             }
         }
-
-        stage('Stop Old Container') {
+        stage('Build Image') {
             steps {
-                sh 'docker rm -f mysite-container || true'
+                sh 'docker build -t static-website .'
             }
         }
-
-        stage('Run Container') {
+        stage('Deploy') {
             steps {
-                sh 'docker run -d -p 80:80 --name mysite-container mysite:v1'
+                sh '''
+                    docker rm -f web || true
+                    docker run -d --name web -p 80:80 static-website
+                '''
             }
         }
     }
