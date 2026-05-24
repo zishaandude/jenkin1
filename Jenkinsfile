@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                echo 'Code already checked out by Jenkins'
+                git branch: 'main', url: 'https://github.com/zishaandude/jenkin1.git'
             }
         }
 
